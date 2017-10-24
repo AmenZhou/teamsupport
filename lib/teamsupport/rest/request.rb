@@ -42,6 +42,7 @@ module Teamsupport
       def perform
         options_key = @request_method == :get ? :params : :body
         # For non-GET requests need to send the options as JSON in the request body
+        @options = @options.to_json if @options.present?
         response = http_client.headers(@headers).public_send(@request_method, @uri.to_s, options_key => @options)
         response_body = response.body.empty? ? '' : symbolize_keys!(response.parse)
         response_headers = response.headers
